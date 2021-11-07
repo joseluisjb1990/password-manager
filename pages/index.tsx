@@ -1,4 +1,6 @@
+import { Box, Button, Container } from '@material-ui/core';
 import type { NextPage } from 'next'
+import { useState } from 'react';
 const PASSWORD_LENGTH = 16;
 
 const getRandomInt = (min: number, max: number): number => {
@@ -21,8 +23,13 @@ const generatePassword = () => {
 }
 
 const Home: NextPage = () => {
+  const [password] = useState(generatePassword())
   return (
-    <p>Password: {generatePassword()}</p>
+    <Container>
+      <p>{password}</p>
+      <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(password)}}>COPY</Button>
+    </Container>
+
   )
 }
 
