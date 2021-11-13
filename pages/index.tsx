@@ -1,6 +1,8 @@
-import { Box, Button, Container, makeStyles } from '@material-ui/core';
+import { Button, Container, makeStyles } from '@material-ui/core';
 import type { NextPage } from 'next'
 import { useState } from 'react';
+import { useSession, signIn, signOut } from "next-auth/react";
+
 const PASSWORD_LENGTH = 16;
 
 const getRandomInt = (min: number, max: number): number => {
@@ -47,12 +49,14 @@ const useStyles = makeStyles({
   button: {
     marginTop: '8px',
     fontSize: '16px',
-    backgroundColor: 'white',
-    color: 'black',
+    backgroundColor: '#012443',
+    color: 'white',
+    width: '120px',
   }
 });
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
   const [password] = useState(generatePassword());
   const classes = useStyles();
 
@@ -69,6 +73,13 @@ const Home: NextPage = () => {
         className={classes.button}
         onClick={() => {navigator.clipboard.writeText(password)}}>
           COPY
+      </Button>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={!session ? () => signIn(): () => signOut()}
+      >
+          { !session ? 'SIGN IN': 'SIGN OUT' }
       </Button>
     </Container>
   )

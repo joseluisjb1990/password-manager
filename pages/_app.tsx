@@ -4,12 +4,14 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { SessionProvider } from "next-auth/react";
+
 const theme = createTheme({});
 
 export default function MyApp(props: AppProps) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps: { session, ...pageProps } } = props;
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -28,7 +30,9 @@ export default function MyApp(props: AppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </ThemeProvider>
     </React.Fragment>
   );
