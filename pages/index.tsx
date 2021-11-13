@@ -1,4 +1,4 @@
-import { Box, Button, Container } from '@material-ui/core';
+import { Box, Button, Container, makeStyles } from '@material-ui/core';
 import type { NextPage } from 'next'
 import { useState } from 'react';
 const PASSWORD_LENGTH = 16;
@@ -22,14 +22,55 @@ const generatePassword = () => {
   }).join('');
 }
 
-const Home: NextPage = () => {
-  const [password] = useState(generatePassword())
-  return (
-    <Container>
-      <p>{password}</p>
-      <Button variant="outlined" onClick={() => {navigator.clipboard.writeText(password)}}>COPY</Button>
-    </Container>
+const useStyles = makeStyles({
+  container: {
+    backgroundColor: '#FDD2BF',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 
+  text: {
+    fontSize: '40px',
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  textContainer: {
+    marginTop: '200px',
+    backgroundColor: '#FF6B6B',
+    padding: '8px',
+    borderRadius: '25px',
+  },
+
+  button: {
+    marginTop: '8px',
+    fontSize: '16px',
+    backgroundColor: 'white',
+    color: 'black',
+  }
+});
+
+const Home: NextPage = () => {
+  const [password] = useState(generatePassword());
+  const classes = useStyles();
+
+  return (
+    <Container
+      className={classes.container}
+      maxWidth="xl"
+    >
+      <div className={classes.textContainer}>
+        <span className={classes.text}>{password}</span>
+      </div>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => {navigator.clipboard.writeText(password)}}>
+          COPY
+      </Button>
+    </Container>
   )
 }
 
